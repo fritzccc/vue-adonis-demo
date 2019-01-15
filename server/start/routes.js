@@ -22,4 +22,5 @@ Route.get('/', () => {
 Route.group(()=>{
   Route.post('register','UserController.register')
   Route.post('login','UserController.login')
+  Route.resource('posts','PostController').middleware('auth')
 }).prefix('api/v1')
