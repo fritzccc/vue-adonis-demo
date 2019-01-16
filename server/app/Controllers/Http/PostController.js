@@ -14,13 +14,22 @@ class PostController {
     const user = await auth.getUser();
     return await user.Posts().fetch();
   }
-  async destroy({params,auth,response}){
+  async destroy({params,auth}){
     const user = await auth.getUser();
     const {id} = params;
     const post = await Post.find(id);
-    AuthService.verifyResource(post,id);
-    await user.Posts().delete(post);
+    AuthService.verifyResource(post,user.id);
+    await post.delete()
     return post;
+  }
+  async update({request, auth ,params}){
+    const user = await auth.getUser();
+    const {id}= params;
+    const post = await Post.find(id);
+    AuthService.verifyResource(post,user.id);
+    post.merge(request.only('title'))
+    await post.save()
+    return post
   }
 }
 
