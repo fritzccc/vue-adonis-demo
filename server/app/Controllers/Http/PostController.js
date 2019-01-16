@@ -1,7 +1,7 @@
 'use strict'
 
 const Post = use('App/Models/Post')
-
+const AuthService = use('App/Services/AuthService');
 class PostController {
   async store({request,auth}){
     const user = await auth.getUser();
@@ -14,16 +14,13 @@ class PostController {
     const user = await auth.getUser();
     return await user.Posts().fetch();
   }
-  async destroy({params,auth}){
+  async destroy({params,auth,response}){
     const user = await auth.getUser();
     const {id} = params;
-    const post = await Post.find(id)
-    console.log(post.user_id)
-    if(post.user_id!=user.id){
-      return {errmsg:"no auth to delete rocords"}
-    }
-    await user.Posts().delete(post)
-    return post
+    const post = await Post.find(id);
+    AuthService.verifyResource(post,id);
+    await user.Posts().delete(post);
+    return post;
   }
 }
 
