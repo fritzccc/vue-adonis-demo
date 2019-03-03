@@ -2,10 +2,6 @@
   <v-app>
     <div id="app">
       <Toolbar></Toolbar>
-      <div id="nav">
-        <router-link to="/">Home</router-link>|
-        <router-link to="/about">About</router-link>
-      </div>
       <router-view/>
     </div>
   </v-app>
